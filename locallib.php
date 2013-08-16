@@ -76,6 +76,8 @@ function local_mail_send_notifications($message) {
 
         $plaindata->user = fullname($message->sender());
         $plaindata->subject = $message->subject();
+        /* Name Course - PucpVirtual*/
+        $plaindata->course = $message->course();
 
         $htmldata->user = fullname($message->sender());
         $htmldata->subject = $message->subject();
@@ -87,10 +89,13 @@ function local_mail_send_notifications($message) {
         $eventdata->name              = 'mail';
         $eventdata->userfrom          = $message->sender();
         $eventdata->userto            = $userto;
-        $eventdata->subject           = get_string('notificationsubject', 'local_mail', $SITE->shortname);
-        $eventdata->fullmessage       = get_string('notificationbody', 'local_mail', $plaindata);
+        //$eventdata->subject           = get_string('notificationsubject', 'local_mail', $SITE->shortname);
+        $eventdata->subject           = $plaindata->subject .' - '. $plaindata->course->fullname;
+        //$eventdata->fullmessage       = get_string('notificationbody', 'local_mail', $plaindata);
+        $eventdata->fullmessage       = $message->content();
         $eventdata->fullmessageformat = FORMAT_PLAIN;
-        $eventdata->fullmessagehtml   = get_string('notificationbodyhtml', 'local_mail', $htmldata);
+        //$eventdata->fullmessagehtml   = get_string('notificationbodyhtml', 'local_mail', $htmldata);
+        $eventdata->fullmessagehtml   = $message->content();
         $eventdata->notification      = 1;
 
         $smallmessagestrings = new stdClass();
